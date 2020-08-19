@@ -12,10 +12,13 @@ app.use(bodyParser.json());
 
 const withDB = async (operations, res) => {
 	try {
-		const client = await MongoClient.connect("mongodb://localhost:27017", {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		});
+		const client = await MongoClient.connect(
+			process.env.MONGODB_URI || "mongodb://localhost:27017",
+			{
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+			}
+		);
 		const db = client.db("table-games");
 
 		await operations(db);
