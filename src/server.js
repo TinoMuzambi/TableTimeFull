@@ -3,8 +3,6 @@ import bodyParser from "body-parser";
 import { MongoClient } from "mongodb";
 import path from "path";
 
-const PORT = process.env.PORT || 8000;
-
 const app = express();
 
 app.use(express.static(path.join(__dirname, "/build")));
@@ -12,13 +10,10 @@ app.use(bodyParser.json());
 
 const withDB = async (operations, res) => {
 	try {
-		const client = await MongoClient.connect(
-			process.env.MONGODB_URI || "mongodb://localhost:27017",
-			{
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-			}
-		);
+		const client = await MongoClient.connect("mongodb://localhost:27017", {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
 		const db = client.db("table-games");
 
 		await operations(db);
@@ -65,4 +60,4 @@ app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname + "/build/index.html"));
 });
 
-app.listen(PORT, () => console.log("Listening..."));
+app.listen("8000", () => console.log("Listening..."));
