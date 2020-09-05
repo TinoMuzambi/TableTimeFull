@@ -8,6 +8,11 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "/build")));
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+	res.setHeaders("Access-Control-Allow-Origin", "*"),
+		res.setHeaders("Access-Control-Allow-Headers", "*"),
+		next();
+});
 
 const connection =
 	"mongodb+srv://tino:7X1w57IyusX9X3pu@cluster0.uzhp6.mongodb.net/tabletime?retryWrites=true&w=majority";
@@ -36,27 +41,44 @@ mongoose.connect(connection, {
 // 	}
 // };
 
-// app.get("/api/game/:name", async (req, res) => {
-// 	withDB(async (db) => {
-// 		const name = parseInt(req.params.name);
+app.get("/api/game/:name", async (req, res) => {
+	// withDB(async (db) => {
+	// 	const name = parseInt(req.params.name);
 
-// 		const gameData = await db.collection("games").findOne({ id: name });
-// 		res.status(200).json(gameData);
-// 	}, res);
-// });
+	// 	const gameData = await db.collection("games").findOne({ id: name });
+	// 	res.status(200).json(gameData);
+	// }, res);
 
-// app.get("/api/games", async (req, res) => {
-// 	withDB(async (db) => {
-// 		const gameData = await db
-// 			.collection("games")
-// 			.find({}, gameData)
-// 			.toArray()
-// 			.then((items) => {
-// 				return items;
-// 			});
-// 		res.status(200).send(gameData);
-// 	}, res);
-// });
+	const name = parseInt(req.params.name);
+	Matches.findOne({ id: name }, (err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(data);
+		}
+	});
+});
+
+app.get("/api/games", async (req, res) => {
+	// withDB(async (db) => {
+	// 	const gameData = await db
+	// 		.collection("games")
+	// 		.find({}, gameData)
+	// 		.toArray()
+	// 		.then((items) => {
+	// 			return items;
+	// 		});
+	// 	res.status(200).send(gameData);
+	// }, res);
+
+	Matches.find((err, data) => {
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			res.status(200).send(data);
+		}
+	});
+});
 
 app.post("/api/game/insert", async (req, res) => {
 	// withDB(async (db) => {
