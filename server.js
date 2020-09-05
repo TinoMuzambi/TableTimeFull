@@ -1,13 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import path from "path";
-import Matches from "./MatchModel";
+// import path from "path";
+import Matches from "./MatchModel.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(express.static(path.join(__dirname, "/build")));
+// app.use(express.static(path.join(__dirname, "/build")));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "*"),
@@ -101,8 +101,8 @@ app.post("/api/game/insert", async (req, res) => {
 	});
 });
 
-app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname + "/build/index.html"));
-});
+// app.get("*", (req, res) => {
+// 	res.sendFile(path.join(__dirname + "/build/index.html"));
+// });
 
 app.listen(PORT, () => console.log("Listening..."));

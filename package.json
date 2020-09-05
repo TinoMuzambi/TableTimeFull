@@ -3,12 +3,13 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "server.js",
+	"type": "module",
 	"engines": {
 		"node": ">=12.8.2",
 		"npm": ">=6.14.5"
 	},
 	"scripts": {
-		"start": "npx nodemon --exec npx babel-node server.js",
+		"start": "node server.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
@@ -17,12 +18,9 @@
 	"dependencies": {
 		"body-parser": "^1.19.0",
 		"express": "^4.17.1",
-		"mongodb": "^3.6.0"
+		"mongoose": "^5.10.3"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.11.1",
-		"@babel/node": "^7.10.5",
-		"@babel/preset-env": "^7.11.0",
 		"nodemon": "^2.0.4"
 	}
 }
