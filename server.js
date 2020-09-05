@@ -9,11 +9,11 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.static(path.join(__dirname, "/build")));
 app.use(bodyParser.json());
-// app.use((req, res, next) => {
-// 	res.setHeaders("Access-Control-Allow-Origin", "*"),
-// 		res.setHeaders("Access-Control-Allow-Headers", "*"),
-// 		next();
-// });
+app.use((req, res, next) => {
+	res.setHeader("Access-Control-Allow-Origin", "*"),
+		res.setHeader("Access-Control-Allow-Headers", "*"),
+		next();
+});
 
 const connection =
 	"mongodb+srv://tino:7X1w57IyusX9X3pu@cluster0.uzhp6.mongodb.net/tabletime?retryWrites=true&w=majority";
