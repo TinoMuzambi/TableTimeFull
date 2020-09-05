@@ -5,14 +5,15 @@ import path from "path";
 import Matches from "./MatchModel";
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(express.static(path.join(__dirname, "/build")));
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-	res.setHeaders("Access-Control-Allow-Origin", "*"),
-		res.setHeaders("Access-Control-Allow-Headers", "*"),
-		next();
-});
+// app.use((req, res, next) => {
+// 	res.setHeaders("Access-Control-Allow-Origin", "*"),
+// 		res.setHeaders("Access-Control-Allow-Headers", "*"),
+// 		next();
+// });
 
 const connection =
 	"mongodb+srv://tino:7X1w57IyusX9X3pu@cluster0.uzhp6.mongodb.net/tabletime?retryWrites=true&w=majority";
@@ -80,6 +81,10 @@ app.get("/api/games", async (req, res) => {
 	});
 });
 
+app.get("/", async (req, res) => {
+	res.status(200).send("Table Time Backend");
+});
+
 app.post("/api/game/insert", async (req, res) => {
 	// withDB(async (db) => {
 	// 	await db.collection("games").insertOne(req.body);
@@ -100,4 +105,4 @@ app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname + "/build/index.html"));
 });
 
-app.listen("5000", () => console.log("Listening..."));
+app.listen(PORT, () => console.log("Listening..."));

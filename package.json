@@ -3,6 +3,10 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "server.js",
+	"engines": {
+		"node": ">=12.8.2",
+		"npm": ">=6.14.5"
+	},
 	"scripts": {
 		"start": "npx nodemon --exec npx babel-node server.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
