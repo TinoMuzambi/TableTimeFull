@@ -15,8 +15,7 @@ app.use((req, res, next) => {
 		next();
 });
 
-const connection =
-	"mongodb+srv://tino:7X1w57IyusX9X3pu@cluster0.uzhp6.mongodb.net/tabletime?retryWrites=true&w=majority";
+const connection = process.env.mongo_uri;
 mongoose.connect(connection, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
