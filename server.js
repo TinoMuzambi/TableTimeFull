@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import Matches from "./MatchModel.js";
+import Pusher from "pusher";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +20,33 @@ mongoose.connect(connection, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true,
+});
+
+const pusher = new Pusher({
+	appId: "1068708",
+	key: "e541d4f20f806b61b5d7",
+	secret: "bd004a929ff76ad40026",
+	cluster: "ap2",
+	encrypted: true,
+});
+
+const db = mongoose.connection;
+
+db.once("open", () => {
+	console.log("DB connected");
+	const collection = db.collection("tabletimes");
+	const changeStream = collection.watch();
+
+	changeStream.on("change", (change) => {
+		if (change.operationType === "remove") {
+			const matchDetails = change.fullDocument;
+			pusher.trigger("matches", "removed", {
+				_id: matchDetails._id,
+			});
+		} else {
+			console.log("Error triggering pusher.");
+		}
+	});
 });
 
 app.get("/api/game/:name", async (req, res) => {
