@@ -51,14 +51,14 @@ app.post("/api/game/insert", async (req, res) => {
 
 	Matches.create(dbMatch, (err, data) => {
 		if (err) {
-			res.statusMessage(500).send(err);
+			res.status(500).send(err);
 		} else {
 			res.status(200).send(data);
 		}
 	});
 });
 
-app.post("api/game/delete", async (req, res) => {
+app.post("/api/game/delete", async (req, res) => {
 	const dbMatch = req.body;
 
 	Matches.deleteOne({ _id: dbMatch._id }, (err, result) => {
