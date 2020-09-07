@@ -61,11 +61,11 @@ app.post("/api/game/insert", async (req, res) => {
 app.post("/api/game/delete", async (req, res) => {
 	const dbMatch = req.body;
 
-	Matches.deleteOne({ _id: dbMatch._id }, (err, result) => {
+	Matches.deleteOne({ _id: dbMatch._id }, (err, data) => {
 		if (err) {
 			res.send(err);
 		} else {
-			res.status(204).send("Gone!");
+			res.status(204).send(data);
 		}
 	});
 });
