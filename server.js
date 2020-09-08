@@ -38,9 +38,9 @@ db.once("open", () => {
 	const changeStream = collection.watch();
 
 	changeStream.on("change", (change) => {
-		if (change.operationType === "remove") {
+		if (change.operationType === "delete") {
 			const matchDetails = change.fullDocument;
-			pusher.trigger("matches", "removed", {
+			pusher.trigger("matches", "deleted", {
 				_id: matchDetails._id,
 			});
 		} else {
