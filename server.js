@@ -43,10 +43,9 @@ db.once("open", () => {
 				_id: change.documentKey._id,
 			});
 		} else if (change.operationType === "insert") {
-			console.log(change.fullDocument);
-			// pusher.trigger("matches", "inserted", {
-
-			// })
+			pusher.trigger("matches", "inserted", {
+				_id: change.fullDocument._id,
+			});
 		} else {
 			console.log("Error triggering pusher.");
 		}
