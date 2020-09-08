@@ -39,11 +39,9 @@ db.once("open", () => {
 
 	changeStream.on("change", (change) => {
 		if (change.operationType === "delete") {
-			const matchDetails = change.fullDocument;
-			console.log(change);
-			// pusher.trigger("matches", "deleted", {
-			// 	_id: matchDetails._id,
-			// });
+			pusher.trigger("matches", "deleted", {
+				_id: change.documentKey,
+			});
 		} else {
 			console.log("Error triggering pusher.");
 		}
