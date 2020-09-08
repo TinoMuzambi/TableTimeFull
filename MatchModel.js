@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const MatchSchema = mongoose.Schema({
-	id: { type: String, required: true },
 	date: { type: Date, required: true },
 	bestOf: { type: String, required: true },
 	gameType: { type: Number, required: true },
