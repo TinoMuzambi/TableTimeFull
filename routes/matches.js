@@ -1,5 +1,7 @@
-import router from "express";
+import express from "express";
 import Matches from "../models/MatchModel.js";
+
+const router = express.Router();
 
 router.get("/:name", async (req, res) => {
 	const name = parseInt(req.params.name);

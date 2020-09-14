@@ -1,18 +1,18 @@
 import express from "express";
 import mongoose from "mongoose";
 import Pusher from "pusher";
-import authRoute from "./routes/auth";
-import matchRoute from "./routes/matches";
+import authRoute from "./routes/auth.js";
+import matchRoute from "./routes/matches.js";
+import cors from "cors";
+import dotenv from "dotenv";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+dotenv.config();
+
 app.use(express.json());
-app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*"),
-		res.setHeader("Access-Control-Allow-Headers", "*"),
-		next();
-});
+app.use(cors());
 
 const connection = process.env.mongo_uri;
 mongoose.connect(connection, {
