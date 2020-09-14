@@ -14,6 +14,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 
+// Connect to DB.
 const connection = process.env.mongo_uri;
 mongoose.connect(connection, {
 	useNewUrlParser: true,
@@ -21,6 +22,7 @@ mongoose.connect(connection, {
 	useUnifiedTopology: true,
 });
 
+// Pusher config for real time.
 const pusher = new Pusher({
 	appId: process.env.pusher_appID,
 	key: process.env.pusher_key,
@@ -30,7 +32,6 @@ const pusher = new Pusher({
 });
 
 const db = mongoose.connection;
-
 db.once("open", () => {
 	console.log("DB connected");
 	const collection = db.collection("tabletimes");
@@ -51,6 +52,7 @@ db.once("open", () => {
 	});
 });
 
+// API Routes
 app.use("/api/user", authRoute);
 
 app.use("/api/games", matchRoute);
@@ -59,4 +61,5 @@ app.get("/", async (req, res) => {
 	res.status(200).send("Table Time Backend");
 });
 
+// Listen on specified PORT.
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
