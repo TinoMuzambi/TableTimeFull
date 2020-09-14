@@ -56,7 +56,7 @@ db.once("open", () => {
 // API Routes
 app.use("/api/user", authRoute);
 
-app.use("/api/games", matchRoute);
+app.use("/api/game", matchRoute);
 
 app.get("/", async (req, res) => {
 	res.status(200).send("Table Time Backend");
