@@ -3,7 +3,7 @@ import Matches from "../models/MatchModel.js";
 
 const router = express.Router();
 
-router.get("/:name", async (req, res) => {
+router.get("/game/:name", async (req, res) => {
 	const name = parseInt(req.params.name);
 	Matches.findOne({ id: name }, (err, data) => {
 		if (err) {
@@ -14,7 +14,7 @@ router.get("/:name", async (req, res) => {
 	});
 });
 
-router.get("/", async (req, res) => {
+router.get("/games/", async (req, res) => {
 	Matches.find((err, data) => {
 		if (err) {
 			res.status(500).send(err);
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 	});
 });
 
-router.post("/insert", async (req, res) => {
+router.post("/game/insert", async (req, res) => {
 	const dbMatch = req.body;
 
 	Matches.create(dbMatch, (err, data) => {
@@ -36,7 +36,7 @@ router.post("/insert", async (req, res) => {
 	});
 });
 
-router.post("/delete", async (req, res) => {
+router.post("/game/delete", async (req, res) => {
 	const dbMatch = req.body;
 
 	Matches.deleteOne({ _id: dbMatch._id }, (err, data) => {
