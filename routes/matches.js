@@ -1,9 +1,10 @@
 import express from "express";
 import Matches from "../models/MatchModel.js";
+import verify from "./verifyToken.js";
 
 const router = express.Router();
 
-router.get("/game/:name", async (req, res) => {
+router.get("/game/:name", verify, async (req, res) => {
 	const name = parseInt(req.params.name);
 	Matches.findOne({ id: name }, (err, data) => {
 		if (err) {
@@ -14,7 +15,7 @@ router.get("/game/:name", async (req, res) => {
 	});
 });
 
-router.get("/games/", async (req, res) => {
+router.get("/games/", verify, async (req, res) => {
 	Matches.find((err, data) => {
 		if (err) {
 			res.status(500).send(err);
@@ -24,7 +25,7 @@ router.get("/games/", async (req, res) => {
 	});
 });
 
-router.post("/game/insert", async (req, res) => {
+router.post("/game/insert", verify, async (req, res) => {
 	const dbMatch = req.body;
 
 	Matches.create(dbMatch, (err, data) => {
@@ -36,7 +37,7 @@ router.post("/game/insert", async (req, res) => {
 	});
 });
 
-router.post("/game/delete", async (req, res) => {
+router.post("/game/delete", verify, async (req, res) => {
 	const dbMatch = req.body;
 
 	Matches.deleteOne({ _id: dbMatch._id }, (err, data) => {

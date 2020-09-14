@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const auth = (req, res, next) => {
+export default (req, res, next) => {
 	// Get and check token.
 	const token = req.header("auth-token");
 	if (!token) return res.status(401).send("Access denied.");
@@ -9,6 +9,7 @@ const auth = (req, res, next) => {
 	try {
 		const verified = jwt.verify(token, process.env.TOKEN_SECRET);
 		req.user = verified;
+		next();
 	} catch (error) {
 		res.status(400).send("Invalid token.");
 	}
