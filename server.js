@@ -1,13 +1,13 @@
 import express from "express";
-import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import Matches from "./MatchModel.js";
 import Pusher from "pusher";
+import authRoute from "./routes/auth";
+import matchRoute from "./routes/matches";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "*"),
 		res.setHeader("Access-Control-Allow-Headers", "*"),
@@ -51,53 +51,12 @@ db.once("open", () => {
 	});
 });
 
-app.get("/api/game/:name", async (req, res) => {
-	const name = parseInt(req.params.name);
-	Matches.findOne({ id: name }, (err, data) => {
-		if (err) {
-			res.status(500).send(err);
-		} else {
-			res.status(200).send(data);
-		}
-	});
-});
+app.use("/api/user", authRoute);
 
-app.get("/api/games", async (req, res) => {
-	Matches.find((err, data) => {
-		if (err) {
-			res.status(500).send(err);
-		} else {
-			res.status(200).send(data);
-		}
-	});
-});
+app.use("/api/games", matchRoute);
 
 app.get("/", async (req, res) => {
 	res.status(200).send("Table Time Backend");
-});
-
-app.post("/api/game/insert", async (req, res) => {
-	const dbMatch = req.body;
-
-	Matches.create(dbMatch, (err, data) => {
-		if (err) {
-			res.status(500).send(err);
-		} else {
-			res.status(200).send(data);
-		}
-	});
-});
-
-app.post("/api/game/delete", async (req, res) => {
-	const dbMatch = req.body;
-
-	Matches.deleteOne({ _id: dbMatch._id }, (err, data) => {
-		if (err) {
-			res.send(err);
-		} else {
-			res.status(204).send(data);
-		}
-	});
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
