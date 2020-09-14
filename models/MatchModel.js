@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const MatchSchema = mongoose.Schema({
+	userID: { type: String, default: "" },
 	date: { type: Date, required: true },
 	bestOf: { type: String, required: true },
 	gameType: { type: Number, required: true },
@@ -11,4 +12,4 @@ const MatchSchema = mongoose.Schema({
 	winner: { type: String, required: true },
 });
 
-export default mongoose.model("tabletime", MatchSchema);
+export default mongoose.model("matches", MatchSchema);

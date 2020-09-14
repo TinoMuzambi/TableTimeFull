@@ -1,9 +1,10 @@
 import express from "express";
 import Matches from "../models/MatchModel.js";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
-router.get("/game/:name", async (req, res) => {
+router.get("/match/:name", async (req, res) => {
 	const name = parseInt(req.params.name);
 	Matches.findOne({ id: name }, (err, data) => {
 		if (err) {
@@ -14,7 +15,25 @@ router.get("/game/:name", async (req, res) => {
 	});
 });
 
-router.get("/games/", async (req, res) => {
+router.get("/matches/", async (req, res) => {
+	// Get and check token.
+	const token = req.header("auth-token");
+	if (!token)
+		return Matches.find({ userID: "" }, (err, data) => {
+			if (err) {
+				res.status(500).send(err);
+			} else {
+				res.status(200).send(data);
+			}
+		});
+
+	// Verify token.
+	try {
+		const verified = jwt.verify(token, process.env.TOKEN_SECRET);
+		req.user = verified;
+	} catch (error) {
+		return res.status(400).send("Invalid token.");
+	}
 	Matches.find((err, data) => {
 		if (err) {
 			res.status(500).send(err);
@@ -24,7 +43,7 @@ router.get("/games/", async (req, res) => {
 	});
 });
 
-router.post("/game/insert", async (req, res) => {
+router.post("/match/insert", async (req, res) => {
 	const dbMatch = req.body;
 
 	Matches.create(dbMatch, (err, data) => {
@@ -36,7 +55,7 @@ router.post("/game/insert", async (req, res) => {
 	});
 });
 
-router.post("/game/delete", async (req, res) => {
+router.post("/match/delete", async (req, res) => {
 	const dbMatch = req.body;
 
 	Matches.deleteOne({ _id: dbMatch._id }, (err, data) => {
