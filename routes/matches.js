@@ -15,7 +15,7 @@ router.get("/match/:name", async (req, res) => {
 	});
 });
 
-router.get("/matches/", async (req, res) => {
+router.get("/matches", async (req, res) => {
 	// Get and check token.
 	const token = req.header("auth-token");
 	if (!token)
@@ -34,6 +34,8 @@ router.get("/matches/", async (req, res) => {
 	} catch (error) {
 		return res.status(400).send("Invalid token.");
 	}
+	console.log("token found.");
+
 	Matches.find({ $or: [{ userID: token }, { userID: "" }] }, (err, data) => {
 		if (err) {
 			res.status(500).send(err);
