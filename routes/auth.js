@@ -30,11 +30,24 @@ router.post("/register", async (req, res) => {
 
 	// Save the user.
 	try {
-		const savedUser = await user.save();
+		await user.save();
 		res.status(201).send({ user: user._id });
 	} catch (err) {
 		res.status(400).send(err, "Something went wrong.");
 	}
+
+	// Create and assign a token.
+	const newUser = await User.findOne({ username: req.body.username });
+	const token = jwt.sign({ _id: newUser._id }, process.env.TOKEN_SECRET);
+	User.updateOne(
+		{ username: req.body.username },
+		{
+			token: token,
+		},
+		(err) => {
+			if (err) console.log(err);
+		}
+	);
 });
 
 // Login route.
@@ -56,9 +69,6 @@ router.post("/login", async (req, res) => {
 	}
 
 	// Create and assign a token.
-	const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
-	res.header("auth-token", token).send(token);
-
-	// res.status(200).send("Logged in.");
+	res.header("auth-token", user.token).send(user.token);
 });
 export default router;

@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
+	token: {
+		type: String,
+		default: "",
+	},
 });
 
 export default mongoose.model("User", userSchema);
