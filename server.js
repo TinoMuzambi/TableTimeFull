@@ -35,7 +35,7 @@ const pusher = new Pusher({
 const db = mongoose.connection;
 db.once("open", () => {
 	console.log("DB connected");
-	const collection = db.collection("tabletimes");
+	const collection = db.collection("matches");
 	const changeStream = collection.watch();
 
 	changeStream.on("change", (change) => {
