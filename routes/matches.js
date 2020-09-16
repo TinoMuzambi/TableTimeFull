@@ -34,7 +34,6 @@ router.get("/matches", async (req, res) => {
 	} catch (error) {
 		return res.status(400).send("Invalid token.");
 	}
-	console.log(typeof token);
 
 	Matches.find({ userID: { $in: [token, ""] } }, (err, data) => {
 		if (err) {
